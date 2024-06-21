@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.Fragment
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fragment1: Fragment1
     private lateinit var fragment2: Fragment2
-    private lateinit var fragment3: Fragment3
+    private lateinit var fragment3: Fragment3 // привязываем фрагмент
     private lateinit var fragment4: Fragment4
     private lateinit var fragment5: Fragment5
 
@@ -20,13 +21,13 @@ class MainActivity : AppCompatActivity() {
 
         fragment1 = Fragment1()
         fragment2 = Fragment2()
-        fragment3 = Fragment3()
+        fragment3 = Fragment3() // называем фрагменты
         fragment4 = Fragment4()
         fragment5 = Fragment5()
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, fragment1)
-            .hide(fragment1)
+            .add(R.id.fragment_container, fragment1) // проявляем фрагмент
+            .hide(fragment1) // прячем фрагмент
             .add(R.id.fragment_container, fragment2)
             .hide(fragment2)
             .add(R.id.fragment_container, fragment3)
@@ -38,12 +39,12 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         val Button1 = findViewById<Button>(R.id.button1) as Button
-        Button1.setOnClickListener {
+        Button1.setOnClickListener {                             // делаем кнопку нажимаемой
             showPreviousFragment()
         }
 
         val Button2 = findViewById<Button>(R.id.button2) as Button
-        Button2.setOnClickListener {
+        Button2.setOnClickListener {                             // делаем кнопку нажимаемой
             showNextFragment()
         }
     }
@@ -53,8 +54,8 @@ class MainActivity : AppCompatActivity() {
         val nextFragment = getNextFragment(currentFragment)
 
         supportFragmentManager.beginTransaction()
-            .hide(currentFragment)
-            .show(nextFragment)
+            .hide(currentFragment) // прячет текущ. фрагмент
+            .show(nextFragment) // показывает следующий
             .commit()
     }
     private fun showPreviousFragment() {
@@ -62,42 +63,31 @@ class MainActivity : AppCompatActivity() {
         val previousFragment = getPreviousFragment(currentFragment)
 
         supportFragmentManager.beginTransaction()
-            .hide(currentFragment) // Hide the current fragment
-            .show(previousFragment) // Show the previous fragment
+            .hide(currentFragment) // прячет текущ. фрагмент
+            .show(previousFragment) // показывает предыдущий фрагмент
             .commit()
     }
     private fun getCurrentFragment(): Fragment {
-        val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4, fragment5)
+        val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4, fragment5) // лист фрагментов
         for (fragment in fragmentList) {
             if (fragment.isVisible) {
-                return fragment
+                return fragment // возврат текущего фрагмента
             }
         }
-        return fragment1 // Default to Fragment1 if no fragment is visible
+        return fragment1 // возврат к 1 фрагменту
     }
 
-
-    private fun showFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .hide(fragment1)
-            .hide(fragment2)
-            .hide(fragment3)
-            .hide(fragment4)
-            .hide(fragment5)
-            .show(fragment)
-            .commit()
-    }
     private fun getNextFragment(currentFragment: Fragment): Fragment {
-        val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4, fragment5)
-        val currentIndex = fragmentList.indexOf(currentFragment)
-        val nextIndex = (currentIndex + 1) % fragmentList.size
+        val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4, fragment5) // лист
+        val currentIndex = fragmentList.indexOf(currentFragment) // приравнение к идексу фрагмента в списке
+        val nextIndex = (currentIndex + 1) % fragmentList.size // приравнение к идексу следующего фрагмента в списке
         return fragmentList[nextIndex]
     }
 
     private fun getPreviousFragment(currentFragment: Fragment): Fragment {
         val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4, fragment5)
-        val currentIndex = fragmentList.indexOf(currentFragment)
-        val previousIndex = if (currentIndex == 0) fragmentList.size - 1 else currentIndex - 1
+        val currentIndex = fragmentList.indexOf(currentFragment) // приравнение к идексу фрагмента в списке
+        val previousIndex = if (currentIndex == 0) fragmentList.size - 1 else currentIndex - 1 // приравнение к идексу  предыдущего фрагмента в списке или первого фрагмента
         return fragmentList[previousIndex]
     }
 
